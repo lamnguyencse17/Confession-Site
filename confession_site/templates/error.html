@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <meta charset="UTF-8">
+    <title>Confession Error</title>
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:admin' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+
+<!-- Error Message -->
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+</body>
+</html>

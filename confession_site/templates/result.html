@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <meta charset="UTF-8">
+    <title>Confesstion Site</title>
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:login' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+
+<!-- Message Display-->
+<h4> Confession của bạn chắc hẳn đã được gửi vào thời điểm hiện tại nếu có bất kì lỗi nào hiển thị, bạn có thể thử lại hoặc báo ngay cho admin biết </h4>
+<h4>ID: {{ id }}</h4>
+<br> Đây là nội dung confession của bạn:
+<br>{{ confession|linebreaks }}
+
+</body>
+</html>

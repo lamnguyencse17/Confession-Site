@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <meta charset="UTF-8">
+    <title>Confession Recall</title>
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:admin' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+
+<!-- Recall Heading and Status -->
+<h1>Recall your confession</h1>
+<h2>Confession ID: {{ id }}</h2>
+{{ confession|linebreaks }}<br>
+status: {{ status }}<br>
+<p></p>
+
+<!-- Delete Request -->
+<form action='{% url 'confession_site:delete' %}' method='post'>
+    {% csrf_token %}
+    <input type="hidden" name="confess_id" value = '{{ id }}'/>
+    <button type='submit'> DELETE CONFESSION</button>
+</form>
+
+</body>
+</html>

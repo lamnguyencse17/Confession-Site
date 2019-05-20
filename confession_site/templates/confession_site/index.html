@@ -1,0 +1,10 @@
+<h1>Confession Site Submit</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="/" method="post">
+  {% csrf_token %}
+  Hãy viết ra những điều bạn mong muốn nhất ở đây:<br>
+  <input type="text" name="confess_content"><br>
+  <input type="submit" value="Submit">
+</form>

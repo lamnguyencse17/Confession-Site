@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <meta charset="UTF-8">
+    <title>Admin Gateway</title>
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div style="margin-bottom:10px ! important;" class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:login' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Login</button>
+</form>
+<!-- Error Message -->
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+</body>
+</html>

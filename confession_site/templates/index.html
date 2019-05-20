@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    {% load staticfiles %}
+    <script src="{% static 'confession_app.js' %}"></script>
+    <meta charset="UTF-8">
+    <title>Confession Site Submit</title>
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div class="menu" onmouseover="this.style.backgroundColor='black'">
+        <a href="{% url 'confession_site:index' %}" onmouseover="this.style.color='white'">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}" onmouseover="this.style.color='white'">Recall</a>
+        <a href="{% url 'confession_site:login' %}" onmouseover="this.style.color='white'">Admin</a>
+        <a href="{% url 'confession_site:about' %}" onmouseover="this.style.color='white'">About</a>
+</div>
+
+<!-- Form Heading -->
+<div class="container">
+      <h4><span class="paragraph">Hãy viết những điều bạn muốn nói vào đây và các ad sẽ đăng tải nó.
+          Tuy nhiên, các bạn không được sử dụng teencode chỉ có thể dùng
+          tiếng việt hoặc tiếng anh</span></h4>
+</div>
+
+<!-- Confession Content Form -->
+<form name="confess_form" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
+  {% csrf_token %}
+    <textarea name="confess_content" rows="10" cols="100">Your Confession goes here</textarea>
+    <p></p>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

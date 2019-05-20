@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+<!-- Menu Nav Bar -->
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:login' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+
+<!-- About us info -->
+<p>Pending</p>
+
+</body>
+</html>

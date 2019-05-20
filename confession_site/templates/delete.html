@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confession Deleted</title>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Menu Nav Bar -->
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:admin' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
+</div>
+
+<!--  Result -->
+<h3>Your confession has been deleted and no longer be able to retrieved</h3>
+</body>
+</html>
