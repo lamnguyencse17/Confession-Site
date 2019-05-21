@@ -10,11 +10,11 @@
 </head>
 <body>
 <!-- Menu Nav Bar -->
-<div class="menu" onmouseover="this.style.backgroundColor='black'">
-        <a href="{% url 'confession_site:index' %}" onmouseover="this.style.color='white'">Home</a>
-        <a href="{% url 'confession_site:recall-index' %}" onmouseover="this.style.color='white'">Recall</a>
-        <a href="{% url 'confession_site:login' %}" onmouseover="this.style.color='white'">Admin</a>
-        <a href="{% url 'confession_site:about' %}" onmouseover="this.style.color='white'">About</a>
+<div class="menu">
+        <a href="{% url 'confession_site:index' %}">Home</a>
+        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+        <a href="{% url 'confession_site:login' %}">Admin</a>
+        <a href="{% url 'confession_site:about' %}">About</a>
 </div>
 
 <!-- Form Heading -->
@@ -22,15 +22,29 @@
       <h4><span class="paragraph">Hãy viết những điều bạn muốn nói vào đây và các ad sẽ đăng tải nó.
           Tuy nhiên, các bạn không được sử dụng teencode chỉ có thể dùng
           tiếng việt hoặc tiếng anh</span></h4>
+
+          <!-- Confession Content Form -->
+          <div>
+          <form name="confess_form" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
+            {% csrf_token %}
+              <textarea name="confess_content" rows="10" cols="100">Your Confession goes here</textarea>
+              <p></p>
+              <input type="submit" value="Submit">
+          </form></div>
 </div>
 
-<!-- Confession Content Form -->
-<form name="confess_form" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
-  {% csrf_token %}
-    <textarea name="confess_content" rows="10" cols="100">Your Confession goes here</textarea>
-    <p></p>
-    <input type="submit" value="Submit">
-</form>
+<!-- Footer -->
+<footer>
+  <hr>
+  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
+  <ul>
+    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
+    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
+    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
+    <li><a href="{% url 'confession_site:about' %}">About</a></li>
+  </ul>
+</footer>
+
 
 </body>
 </html>

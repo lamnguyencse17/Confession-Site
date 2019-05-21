@@ -6,41 +6,43 @@ html {
   -webkit-text-size-adjust: 100%;
   font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', 'Fira Sans', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
   color: #333;
-  background: rgba(0,0,0,.1);
-  background: -moz-linear-gradient(top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,.1) 100vh);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(100vh,rgba(0,0,0,.1)));
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,.1) 100vh);
-  background: -o-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,.1) 100vh);
-  background: -ms-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,.1) 100vh);
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,.1) 100vh);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bbbbbb00', endColorstr='#dddddd00',GradientType=0);
+  background: black;
 }
 body {
   background-position:center;
   background-size: contain;
   margin: 0 auto;
   max-width: 1050px;
+  max-height: 900px;
   min-height: 100%;
   padding: 2em;
 }
 .menu {
   position: sticky;
   top: 0;
-  background-color: black;
+  background-color: white;
   border: 1px solid black;
   padding: 10px 0px 10px 0px;
-  color: black;
+  color: white;
   margin: 0 auto;
   overflow: hidden;
 }
 .menu a {
+            border-left: 2px
             float: left;
             color: black;
+            background-color: white;
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
             font-size: 20px;
+            transition: color 0.5s ease-in-out;
+            transition: background-color 0.5s ease-in-out;
         }
+.menu a:hover {
+  color: white;
+  background-color: black;
+}
 h1, h2, h3, h4, h5, h6 {
   margin: .5em 0;
   font-weight: 600;
@@ -80,10 +82,35 @@ h5 {
 }
 h6 {
   font-size: 120%;
+  color: white;
 }
 .container {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 1px solid black;
   background-color: white;
+  height: 750px;
+}
+.container textarea{
+  margin: 10px;
+}
+div { text-align: center; }
+footer {
+  width: 1050px;
+  height: 109px;
+  position: absolute;
+  bottom: 0;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  display: inline;
+  font-size: 110%;
+  padding-right: 5px;
+}
+li a{
+  color: white;
 }

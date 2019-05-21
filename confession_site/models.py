@@ -23,6 +23,12 @@ class Confession(models.Model):
 class Moderator(models.Model):
     username = models.CharField(max_length=20)
     hash = models.TextField()
-
     def __str__(self):
         return self.username
+
+
+class LoginRecord(models.Model):
+    mod = models.ForeignKey(Moderator, on_delete=models.CASCADE)
+    date = models.DateTimeField('login date')
+    def __str__(self):
+        return self.mod

@@ -16,12 +16,29 @@
         <a href="{% url 'confession_site:about' %}">About</a>
 </div>
 <!-- Main Content -->
-<h2>Check your confession status</h2>
+<div class="container">
+<h4><span class="paragraph">Check your confession status</span></h4>
+
+<!-- Recall Form -->
 <form action="{% url 'confession_site:recall' %}" method="post">
     {% csrf_token %}
     Input ID:
     <input type="number" name="confess_id"><br>
     <input type="submit" value="Recall">
 </form>
+</div>
+
+<!-- Footer -->
+<footer>
+  <hr>
+  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
+  <ul>
+    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
+    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
+    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
+    <li><a href="{% url 'confession_site:about' %}">About</a></li>
+  </ul>
+</footer>
+
 </body>
 </html>
