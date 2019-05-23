@@ -4,6 +4,7 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     {% load staticfiles %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static 'confession_app.js' %}"></script>
     <meta charset="UTF-8">
     <title>Confession Management</title>
@@ -29,15 +30,21 @@ Hello, {{ user }}
       <p>{{ confession.confess_date}}</p>
     </div>
     <div class="confession-main">
-      <p>{{ confession.confession_text }}</p>
+      <p id="talk">{{ confession.confession_text }}</p>
     </div>
+
     <div class="confession-footer">
-      <form method="post" action"" onsubmit="return edit_confession_text()">
+
+      <form method="post">
         {% csrf_token %}
-        {{  confession.id|json_script:"confession_id"}}
         <button type="submit">Publish</button>
-        <button type="submit">Edit</button>
       </form>
+
+      <form method="post" action="">
+        {% csrf_token %}
+        <button class="edit-button" type="submit" data-confession-id="{{  confession.id }}" data-confession-text="{{ confession.confession_text }}" data-session="{{  user }}">Edit</button>
+      </form>
+
     </div>
   </div>
   {% endfor %}

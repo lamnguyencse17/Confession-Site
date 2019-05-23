@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <meta charset="UTF-8">
-    <title>Admin Gateway</title>
-</head>
-<body>
-<!-- Menu Nav Bar -->
-<div style="margin-bottom:10px ! important;" class="menu">
-        <a href="{% url 'confession_site:index' %}">Home</a>
-        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
-        <a href="{% url 'confession_site:login' %}">Admin</a>
-        <a href="{% url 'confession_site:about' %}">About</a>
-</div>
-
+{% extends "base.html" %}
+{% block content %}
+<!-- Form Heading -->
 <!-- Login Form -->
 <div class="container">
 <form method="post">
@@ -25,19 +11,4 @@
 </div>
 <!-- Error Message -->
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-
-<!-- Footer -->
-<footer>
-  <hr>
-  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
-  <ul>
-    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
-    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
-    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
-    <li><a href="{% url 'confession_site:about' %}">About</a></li>
-  </ul>
-</footer>
-
-</body>
-</html>
+{% endblock content %}

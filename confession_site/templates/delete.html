@@ -1,37 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Confession Deleted</title>
-    {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-</head>
-<body>
-
-<!-- Menu Nav Bar -->
-<div class="menu">
-        <a href="{% url 'confession_site:index' %}">Home</a>
-        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
-        <a href="{% url 'confession_site:admin' %}">Admin</a>
-        <a href="{% url 'confession_site:about' %}">About</a>
-</div>
-
+{% extends "base.html" %}
+{% block content %}
 <!--  Result -->
 <div class="container">
 <h5>Your confession has been deleted and no longer be able to retrieved</h5>
 </div>
-
-
-<!-- Footer -->
-<footer>
-  <hr>
-  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
-  <ul>
-    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
-    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
-    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
-    <li><a href="{% url 'confession_site:about' %}">About</a></li>
-  </ul>
-</footer>
-</body>
-</html>
+{% endblock content %}

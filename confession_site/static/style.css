@@ -88,7 +88,7 @@ h5 {
 }
 h6 {
   font-size: 120%;
-  color: white;
+  color: grey;
 }
 .container {
   position: sticky;
@@ -163,3 +163,4 @@ li a{
   margin-top: 0.7em
   display: inline;
 }
+.edit-button{}

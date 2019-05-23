@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -27,7 +27,7 @@ def result(request):
                     'error_message': "Duplicates found",
                 })
             else:
-                confession = Confession(confession_text=confess, confess_date=timezone.now())
+                confession = Confession(confession_text=confess, confess_date=timezone.now(), confession_edited_date=timezone.now())
                 confession.save()
                 return render(request, 'result.html', {'confession': confession.confession_text, 'id': confession.id})
 
@@ -37,16 +37,16 @@ def recall(request):
         raise Http404
     else:
         confess_id = request.POST.get('confess_id')  # Only for initialize purpose
-        confession = Confession.objects.get(id=1)
-        try:  # Validate POST data
-            confession = Confession.objects.get(id=confess_id)
-        except (confession.DoesNotExist, ValueError):
+        if Confession.objects.filter(id=confess_id):
+            confession = Confession.objects.get(id = confess_id)
+            return render(request, 'recall.html', {'confession': confession.confession_text,
+                                                   'status': confession.confession_published,
+                                                   'id': confession.id})
+        else:
             return render(request, 'error.html', {
                 'error_message': "you inputted invalid ID",
             })
-        return render(request, 'recall.html', {'confession': confession.confession_text,
-                                               'status': confession.confession_published,
-                                               'id': confession.id})
+
 
 
 def error(request):
@@ -138,3 +138,27 @@ def manage(request):
         })
     confess_list = Confession.objects.filter(confession_published="Unpublished").order_by('-confess_date')
     return render(request, 'manage.html', {'user': request.session['username'], 'list': confess_list})
+
+def edit_post(request):
+    if (request.method == 'POST'):
+        confession_id = request.POST.get('id')
+        confession_edit = request.POST.get('confession_edit')
+        user_session = request.POST.get('user')
+        response_data = {}
+        try:
+            editor = Moderator.objects.get(username=user_session)
+            Confession.objects.filter(id=confession_id).update(confession_edited_by=editor)
+            edit = Confession.objects.get(id=confession_id)
+            edit.confession_text = confession_edit
+            edit.confession_edited = 'Yes'
+            edit.confession_edited_by = Moderator.objects.get(username=user_session)
+            edit.confession_edited_date = timezone.now()
+            edit.save()
+            response_data['result'] = 'Edit successfully'
+            response_data['edit'] = confession_edit
+            return JsonResponse(response_data)
+        except (edit.DoesNotExist, ValueError):
+            return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

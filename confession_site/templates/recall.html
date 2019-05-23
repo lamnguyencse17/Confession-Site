@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <meta charset="UTF-8">
-    <title>Confession Recall</title>
-</head>
-<body>
-<!-- Menu Nav Bar -->
-<div class="menu">
-        <a href="{% url 'confession_site:index' %}">Home</a>
-        <a href="{% url 'confession_site:recall-index' %}">Recall</a>
-        <a href="{% url 'confession_site:admin' %}">Admin</a>
-        <a href="{% url 'confession_site:about' %}">About</a>
-</div>
-
+{% extends "base.html" %}
+{% block content %}
 <!-- Recall Heading and Status -->
 <h1>Recall your confession</h1>
 <h2>Confession ID: {{ id }}</h2>
@@ -28,19 +13,4 @@ status: {{ status }}<br>
     <input type="hidden" name="confess_id" value = '{{ id }}'/>
     <button type='submit'> DELETE CONFESSION</button>
 </form>
-
-<!-- Footer -->
-<footer>
-  <hr>
-  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
-  <ul>
-    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
-    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
-    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
-    <li><a href="{% url 'confession_site:about' %}">About</a></li>
-  </ul>
-</footer>
-
-
-</body>
-</html>
+{% endblock content %}

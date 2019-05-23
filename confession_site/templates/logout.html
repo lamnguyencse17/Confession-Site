@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    {% load staticfiles %}
-    <script src="{% static 'confession_app.js' %}"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  <!-- Menu Nav Bar -->
-  <div style="margin-bottom:10px ! important;" class="menu">
-          <a href="{% url 'confession_site:index' %}">Home</a>
-          <a href="{% url 'confession_site:recall-index' %}">Recall</a>
-          <a href="{% url 'confession_site:login' %}">Admin</a>
-          <a href="{% url 'confession_site:about' %}">About</a>
-  </div>
-
-
+{% extends "base.html" %}
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
@@ -26,20 +7,6 @@
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a>
 {% endif %}
-{% endblock %}
-
-
-
-<!-- Footer -->
-<footer>
-  <hr>
-  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
-  <ul>
-    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
-    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
-    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
-    <li><a href="{% url 'confession_site:about' %}">About</a></li>
-  </ul>
-</footer>
-</body>
-</html>
+<!-- Error Message -->
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% endblock content %}
