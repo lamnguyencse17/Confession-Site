@@ -9,10 +9,51 @@
     <title>Confession Management</title>
 </head>
 <body>
+  <!-- Menu Nav Bar -->
+  <div style="margin-bottom:10px ! important;" class="menu">
+          <a href="{% url 'confession_site:index' %}">Home</a>
+          <a href="{% url 'confession_site:recall-index' %}">Recall</a>
+          <a href="{% url 'confession_site:login' %}">Admin</a>
+          <a href="{% url 'confession_site:about' %}">About</a>
+  </div>
+
+
+
 Hello, {{ user }}
 <form method="get" action="/logout">
     <button type="submit">Logout</button>
 </form>
+  {% for confession in list %}
+  <div class="confession-box">
+    <div class="confession-heading">
+      <p>{{ confession.confess_date}}</p>
+    </div>
+    <div class="confession-main">
+      <p>{{ confession.confession_text }}</p>
+    </div>
+    <div class="confession-footer">
+      <form method="post" action"" onsubmit="return edit_confession_text()">
+        {% csrf_token %}
+        {{  confession.id|json_script:"confession_id"}}
+        <button type="submit">Publish</button>
+        <button type="submit">Edit</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
 
+
+
+<!-- Footer -->
+<footer>
+  <hr>
+  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
+  <ul>
+    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
+    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
+    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
+    <li><a href="{% url 'confession_site:about' %}">About</a></li>
+  </ul>
+</footer>
 </body>
 </html>

@@ -31,4 +31,4 @@ class LoginRecord(models.Model):
     mod = models.ForeignKey(Moderator, on_delete=models.CASCADE)
     date = models.DateTimeField('login date')
     def __str__(self):
-        return self.mod
+        return '{0} {1}'.format(self.mod.username,self.date)

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
 from .form import LoginForm
-from .models import Confession, Moderator
+from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
 
 
@@ -81,6 +81,12 @@ def recall_index(request):
 
 
 def login(request):
+    if request.method == 'GET':
+        try:
+            request.session['username']
+            return HttpResponseRedirect('/manage/')
+        except KeyError:
+            pass
     form = LoginForm(request.POST)
     if request.method == 'POST' and form.is_valid():
         if Moderator.objects.filter(username=form.cleaned_data['username']):
@@ -90,7 +96,13 @@ def login(request):
                 request.session.set_expiry(300)
                 return HttpResponseRedirect('/manage/')
             else:
-                HttpResponseRedirect('')
+                return render(request, 'error.html', {
+                    'error_message': "Wrong credential",
+                })
+        else:
+            return render(request, 'error.html', {
+                'error_message': "Wrong credential",
+            })
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
@@ -108,9 +120,21 @@ def register(request):
 
 
 def logout(request):
-    del request.session['username']
+    try:
+        del request.session['username']
+    except KeyError:
+        return render(request, 'error.html', {
+            'error_message': "Not logged in",
+        })
     return render(request, 'logout.html')
 
 
 def manage(request):
-    return render(request, 'manage.html', {'user': request.session['username']})
+    try:
+        request.session['username']
+    except KeyError:
+        return render(request, 'error.html', {
+            'error_message': "Not logged in yet!",
+        })
+    confess_list = Confession.objects.filter(confession_published="Unpublished").order_by('-confess_date')
+    return render(request, 'manage.html', {'user': request.session['username'], 'list': confess_list})

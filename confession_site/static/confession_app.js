@@ -5,3 +5,9 @@ function validateForm_content() {
         return false;
     }
 }
+
+function edit_confession_text() {
+  let content = JSON.parse(document.getElementById('confession_id').textContent);
+  alert(content);
+  return true;
+}

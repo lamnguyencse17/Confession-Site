@@ -4,7 +4,10 @@ html {
   font-weight: 400;
   min-height: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', 'Fira Sans', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+  font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light',
+  'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', 'Fira Sans',
+   Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans',
+    'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
   color: #333;
   background: black;
 }
@@ -48,7 +51,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -.03em;
   line-height: 1.2;
-  font-family: 'Fira Sans', 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+  font-family: 'Fira Sans', 'Source Sans Pro', 'Open Sans', Roboto,
+   'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro',
+    'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed',
+     'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
   word-break: break-word;
 }
 h1 {
@@ -85,11 +91,12 @@ h6 {
   color: white;
 }
 .container {
+  position: sticky;
   margin-top: 20px;
   margin-bottom: 20px;
   border: 1px solid black;
   background-color: white;
-  height: 750px;
+  height: 50em;
 }
 .container textarea{
   margin: 10px;
@@ -113,4 +120,46 @@ li {
 }
 li a{
   color: white;
+}
+
+.confession-box{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid grey;
+  background-color: white;
+  min-height: 8em;
+}
+.confession-box p{
+  text-align: left;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.confession-heading{
+  margin: 2px;
+  margin-bottom: 0;
+  border: 1px solid black;
+  background-color: white;
+  height: 2em;
+}
+.confession-main{
+  margin: 2px;
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 1px solid black;
+  border-top: 0;
+  border-bottom: 0;
+  background-color: white;
+  min-height: 5em;
+}
+.confession-footer{
+  margin: 2px;
+  margin-top: 0;
+  border: 1px solid black;
+  background-color: white;
+  height: 3em;
+  text-align: left;
+}
+.confession-footer form{
+  margin-top: 0.7em
+  display: inline;
 }
