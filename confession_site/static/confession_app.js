@@ -69,9 +69,10 @@ $(function() {
     $('#scroll').scroll( function(){
       if (Math.abs($('#scroll').scrollTop() - ($('#scroll')[0].scrollHeight-$('#scroll').height())) <= 1)
       {
+        scroll_position = $('#scroll').scrollTop()
         var page = $(this).data('page')
         console.log(page)
-        load_post(page+1)
+        load_post(page+1, scroll_position)
       }
     })
 });
@@ -119,19 +120,22 @@ function delete_post(confession_id) {
   })
 }
 
-function load_post(page) {
+function load_post(page, scroll_position) {
   $.ajax({
     url: "/manage/",
     type: "POST",
     data: { page_number: page},
 
-    success: function(json) {
-      console.log(JSON.parse(json.query))
-      data = JSON.parse(json.query)
-      $('.confession-box').append('<div class="confession-heading"><p>' + data[0].confess_date + '</p></div><!-- Confession --><div class="confession-main"><p id="' + data[0].confess_date + '">' + data[0].confession_text + '</p></div><div class="confession-footer"><!-- Submit Button --><form method="post">{% csrf_token %}<button type="submit">Publish</button></form><!-- Edit Button --><form method="post" action="">{% csrf_token %}<button class="edit-button" type="submit" data-confession-id="' + data[0].pk + '" data-confession-text="' + data[0].confessions_text + '" data-session="{{  user }}">Edit</button></form></div>')
+    success: function(data) {
+      console.log("insanity check")
+      console.log(data)
+      $("#scroll").replaceWith(data);
+      $('#scroll').scrollTop(scroll_position)
+      // data = JSON.parse(json.query)
+      // $('.confession-box').append('<div class="confession-heading"><p>' + data[0].confess_date + '</p></div><!-- Confession --><div class="confession-main"><p id="' + data[0].confess_date + '">' + data[0].confession_text + '</p></div><div class="confession-footer"><!-- Submit Button --><form method="post">{% csrf_token %}<button type="submit">Publish</button></form><!-- Edit Button --><form method="post" action="">{% csrf_token %}<button class="edit-button" type="submit" data-confession-id="' + data[0].pk + '" data-confession-text="' + data[0].confessions_text + '" data-session="{{  user }}">Edit</button></form></div>')
     },
     error: function(xhr, errmsg, err) {
       console.log(xhr.status + ": " + xhr.responseText);
     }
-  })
+  });
 }

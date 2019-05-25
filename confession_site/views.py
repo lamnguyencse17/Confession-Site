@@ -8,6 +8,8 @@ from django.core import serializers
 from .form import LoginForm
 from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
+from django.template.loader import render_to_string
+
 
 
 def index(request):
@@ -153,19 +155,16 @@ def manage(request):
     else:
         response_data = {}
         page_number = request.POST.get("page_number")
-        paginator = Paginator(confess_list, 5)
+        paginator = Paginator(confess_list, 5*page_number)
         try:
             confessions = paginator.page(page_number)
-            response_data['result'] = 'Successfully'
         except PageNotAnInteger:
             confessions = paginator.page(1)
-            response_data['result'] = 'Unuccessfully'
         except EmptyPage:
             confessions = paginator.page(paginator.num_pages)
-            response_data['result'] = 'Unsuccessfully'
-        confessions = serializers.serialize('json', list(confessions), fields=["id", "confession_text", "confess_date"])
-        response_data['query'] = confessions
-        return JsonResponse(response_data)
+        html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username']})
+        return HttpResponse(html)
+        #return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
 
 def edit_post(request):
     if request.method == 'POST':

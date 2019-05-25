@@ -1,11 +1,4 @@
-{% extends "base.html" %}
-{% block content %}
-Hello, {{ user }}
-<form method="get" action="/logout">
-    <button type="submit">Logout</button>
-</form>
 <div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
-  <h1>{{ list.number }}</h1>
   {% for confession in list %}
   <div class="confession-box">
     <!-- Date Time -->
@@ -18,6 +11,7 @@ Hello, {{ user }}
     </div>
 
     <div class="confession-footer">
+
 
 <!-- Submit Button -->
       <form method="post">
@@ -34,4 +28,3 @@ Hello, {{ user }}
   </div>
   {% endfor %}
 </div>
-{% endblock content %}
