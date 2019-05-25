@@ -1,45 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    {% load staticfiles %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="{% static 'confession_app.js' %}"></script>
-    <meta charset="UTF-8">
-    <title>Confession Management</title>
-</head>
-<body>
-  <!-- Menu Nav Bar -->
-  <div style="margin-bottom:10px ! important;" class="menu">
-          <a href="{% url 'confession_site:index' %}">Home</a>
-          <a href="{% url 'confession_site:recall-index' %}">Recall</a>
-          <a href="{% url 'confession_site:login' %}">Admin</a>
-          <a href="{% url 'confession_site:about' %}">About</a>
-  </div>
-
-
-
+{% extends "base.html" %}
+{% block content %}
 Hello, {{ user }}
 <form method="get" action="/logout">
     <button type="submit">Logout</button>
 </form>
+<div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
   {% for confession in list %}
   <div class="confession-box">
+    <!-- Date Time -->
     <div class="confession-heading">
       <p>{{ confession.confess_date}}</p>
     </div>
+    <!-- Confession -->
     <div class="confession-main">
-      <p id="talk">{{ confession.confession_text }}</p>
+      <p id="{{ confession.id }}">{{ confession.confession_text }}</p>
     </div>
 
     <div class="confession-footer">
 
+
+<!-- Submit Button -->
       <form method="post">
         {% csrf_token %}
         <button type="submit">Publish</button>
       </form>
-
+<!-- Edit Button -->
       <form method="post" action="">
         {% csrf_token %}
         <button class="edit-button" type="submit" data-confession-id="{{  confession.id }}" data-confession-text="{{ confession.confession_text }}" data-session="{{  user }}">Edit</button>
@@ -48,19 +33,5 @@ Hello, {{ user }}
     </div>
   </div>
   {% endfor %}
-
-
-
-<!-- Footer -->
-<footer>
-  <hr>
-  <h6>Copyright 2019 - 2020 Confession-Site. Best confession template backed by Django </h6>
-  <ul>
-    <li><a href="{% url 'confession_site:index' %}">Home</a></li>
-    <li><a href="{% url 'confession_site:recall-index' %}">Recall</a></li>
-    <li><a href="{% url 'confession_site:login' %}">Admin</a></li>
-    <li><a href="{% url 'confession_site:about' %}">About</a></li>
-  </ul>
-</footer>
-</body>
-</html>
+</div>
+{% endblock content %}

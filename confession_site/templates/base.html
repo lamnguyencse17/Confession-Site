@@ -18,7 +18,10 @@
         <a href="{% url 'confession_site:about' %}">About</a>
 </div>
 
+{% block container %}<div class="container">{% endblock container %}
+<div id="content-wrap">
 {% block content %}{% endblock content %}
+</div>
 
 <!-- Footer -->
 <footer>
@@ -31,7 +34,7 @@
     <li><a href="{% url 'confession_site:about' %}">About</a></li>
   </ul>
 </footer>
-
+</div>
 
 </body>
 </html>

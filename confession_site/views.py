@@ -3,6 +3,8 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse, JsonRespons
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core import serializers
 from .form import LoginForm
 from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
@@ -39,6 +41,7 @@ def recall(request):
         confess_id = request.POST.get('confess_id')  # Only for initialize purpose
         if Confession.objects.filter(id=confess_id):
             confession = Confession.objects.get(id = confess_id)
+            print(confession)
             return render(request, 'recall.html', {'confession': confession.confession_text,
                                                    'status': confession.confession_published,
                                                    'id': confession.id})
@@ -60,16 +63,15 @@ def delete(request):
     if request.method == 'GET':  # prevent direct access
         raise Http404
     else:
-        confess_id = request.POST.get('confess_id')
-        confession = Confession.objects.get(id=2)
-        try:
-            confession = Confession.objects.get(id=confess_id)
-        except (confession.DoesNotExist, ValueError):
-            return render(request, 'error.html', {
-                'error_message': "you inputted invalid ID",
-            })
-        confession.delete()
-        return render(request, 'delete.html')
+        confess_id = request.POST.get('id')
+        response_data = {}
+        if Confession.objects.filter(id=confess_id):
+            confession = Confession.objects.get(id = confess_id)
+            confession.delete()
+            response_data['result'] = 'Delete successfully'
+        else:
+            response_data['result'] = 'Delete unsuccessfully'
+        return JsonResponse(response_data)
 
 
 def about(request):
@@ -128,7 +130,6 @@ def logout(request):
         })
     return render(request, 'logout.html')
 
-
 def manage(request):
     try:
         request.session['username']
@@ -137,10 +138,37 @@ def manage(request):
             'error_message': "Not logged in yet!",
         })
     confess_list = Confession.objects.filter(confession_published="Unpublished").order_by('-confess_date')
-    return render(request, 'manage.html', {'user': request.session['username'], 'list': confess_list})
+    paginator = Paginator(confess_list, 5)
+    #Experimental
+    if (request.method == "GET"):
+        page_number = request.GET.get("page_number")
+        paginator = Paginator(confess_list, 5)
+        try:
+            confessions = paginator.page(page_number)
+        except PageNotAnInteger:
+            confessions = paginator.page(1)
+        except EmptyPage:
+            confessions = paginator.page(paginator.num_pages)
+        return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
+    else:
+        response_data = {}
+        page_number = request.POST.get("page_number")
+        paginator = Paginator(confess_list, 5)
+        try:
+            confessions = paginator.page(page_number)
+            response_data['result'] = 'Successfully'
+        except PageNotAnInteger:
+            confessions = paginator.page(1)
+            response_data['result'] = 'Unuccessfully'
+        except EmptyPage:
+            confessions = paginator.page(paginator.num_pages)
+            response_data['result'] = 'Unsuccessfully'
+        confessions = serializers.serialize('json', list(confessions), fields=["id", "confession_text", "confess_date"])
+        response_data['query'] = confessions
+        return JsonResponse(response_data)
 
 def edit_post(request):
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         confession_id = request.POST.get('id')
         confession_edit = request.POST.get('confession_edit')
         user_session = request.POST.get('user')
