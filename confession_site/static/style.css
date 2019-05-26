@@ -9,7 +9,7 @@ html {
    Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans',
     'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
   color: #333;
-  background: black;
+  background: #84D883;
 }
 body {
   background-position:center;
@@ -29,10 +29,10 @@ body {
   color: white;
   margin: 0 auto;
   overflow: hidden;
+  align-content: center;
 }
 .menu a {
-            border-left: 2px
-            float: left;
+            border-left: 2px;
             color: black;
             background-color: white;
             text-align: center;
@@ -88,7 +88,7 @@ h5 {
 }
 h6 {
   font-size: 120%;
-  color: grey;
+  color: #6451A1;
 }
 .container {
   position: sticky;
@@ -119,7 +119,7 @@ li {
   padding-right: 5px;
 }
 li a{
-  color: white;
+  color: #6451A1;
 }
 
 .confession-box{
@@ -160,7 +160,31 @@ li a{
   text-align: left;
 }
 .confession-footer form{
-  margin-top: 0.7em
   display: inline;
 }
 .edit-button{}
+.contact-form-container{
+  margin: 10px;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  border: 0.5px solid black;
+  align-content: center;
+  align-items: center;
+}
+.contact-form-container h1{
+  text-align: center;
+  font-size: 150%;
+}
+.contact-form-container input{
+  margin: 2px;
+  border: 0.5px solid black;
+  text-align: left;
+  width: 20vw;
+}
+.contact-form-container textarea{
+  width: 20vw;
+}
+.contact-form-container label{
+  font-weight: bold;
+  font-size: 110%;
+}

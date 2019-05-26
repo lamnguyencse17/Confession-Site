@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- About us info -->
-<div class="container"
-<p>Pending</p>
+<div class="container">
+    <p>Facebook Page: <a href="https://www.facebook.com/TKNconfession/" > Contact</a></p>
+<!-- Contact Form-->
+    <div class="contact-form-container">
+        <h1>Contact Form</h1>
+        <form action="" method="POST">
+
+            <label for="name"> Name </label><br>
+            <input type="text" id="name" placeholder="Your name"><br>
+
+            <label for="email"> Email </label><br>
+            <input type="email" id="email" placeholder="Email"><br>
+
+            <textarea name="contact_text" rows="10" cols="auto"></textarea><br>
+        
+            <input type="submit" value="Submit" style="width: auto">
+        </form>
+    </div>
 </div>
 {% endblock content %}
