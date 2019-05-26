@@ -1,12 +1,4 @@
-{% extends "base.html" %}
-{% block content %}
-Hello, {{ user }}
-
-<form method="get" action="/logout/">
-    <button type="submit">Logout</button>
-</form>
-<div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
-  <h1>{{ list.number }}</h1>
+{% comment %} <div class="confession-outbound" data-page="{{ list.number }}" id="scroll"> {% endcomment %}
   {% for confession in list %}
   <div class="confession-box">
     <!-- Date Time -->
@@ -20,17 +12,19 @@ Hello, {{ user }}
 
     <div class="confession-footer">
 
+
 <!-- Submit Button -->
       <form method="post">
+        {% comment %} <input type='hidden' name='csrfmiddlewaretoken value='{{ csrf_token_value }}'/> {% endcomment %}
         <button type="submit">Publish</button>
       </form>
 <!-- Edit Button -->
       <form method="post" action="">
+        {% comment %} <input type='hidden' name='csrfmiddlewaretoken value='{{ csrf_token_value }}'/> {% endcomment %}
         <button class="edit-button" type="submit" data-confession-id="{{  confession.id }}" data-confession-text="{{ confession.confession_text }}" data-session="{{  user }}">Edit</button>
       </form>
 
     </div>
   </div>
   {% endfor %}
-</div>
-{% endblock content %}
+{% comment %} </div> {% endcomment %}

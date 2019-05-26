@@ -8,9 +8,8 @@ status: {{ status }}<br>
 <p></p>
 
 <!-- Delete Request -->
-<form action='{% url 'confession_site:delete' %}' method='post'>
+<form method="post" action="">
     {% csrf_token %}
-    <input type="hidden" name="confess_id" value = '{{ id }}'/>
-    <button type='submit'> DELETE CONFESSION</button>
+    <button class="delete-button" type="submit" data-confession-id="{{ id }}"> DELETE CONFESSION</button>
 </form>
 {% endblock content %}
