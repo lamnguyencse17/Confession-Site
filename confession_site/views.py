@@ -9,8 +9,8 @@ from .form import LoginForm
 from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
 from django.template.loader import render_to_string
-
-
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'index.html')
@@ -132,6 +132,7 @@ def logout(request):
         })
     return render(request, 'logout.html')
 
+@csrf_exempt
 def manage(request):
     try:
         request.session['username']
@@ -153,19 +154,22 @@ def manage(request):
             confessions = paginator.page(paginator.num_pages)
         return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
     else:
-        response_data = {}
         page_number = request.POST.get("page_number")
-        paginator = Paginator(confess_list, 5*page_number)
+        paginator = Paginator(confess_list, 5)
+        if (paginator.page(int(page_number)-1)).has_next() is False:
+            return HttpResponse('No More')
         try:
             confessions = paginator.page(page_number)
         except PageNotAnInteger:
             confessions = paginator.page(1)
         except EmptyPage:
             confessions = paginator.page(paginator.num_pages)
-        html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username']})
+        csrf_token_value = get_token(request)
+        html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username'], 'csrf_token_value': csrf_token_value})
         return HttpResponse(html)
         #return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
 
+@csrf_exempt
 def edit_post(request):
     if request.method == 'POST':
         confession_id = request.POST.get('id')

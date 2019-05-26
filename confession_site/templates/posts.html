@@ -1,4 +1,4 @@
-<div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
+{% comment %} <div class="confession-outbound" data-page="{{ list.number }}" id="scroll"> {% endcomment %}
   {% for confession in list %}
   <div class="confession-box">
     <!-- Date Time -->
@@ -15,16 +15,16 @@
 
 <!-- Submit Button -->
       <form method="post">
-        {% csrf_token %}
+        {% comment %} <input type='hidden' name='csrfmiddlewaretoken value='{{ csrf_token_value }}'/> {% endcomment %}
         <button type="submit">Publish</button>
       </form>
 <!-- Edit Button -->
       <form method="post" action="">
-        {% csrf_token %}
+        {% comment %} <input type='hidden' name='csrfmiddlewaretoken value='{{ csrf_token_value }}'/> {% endcomment %}
         <button class="edit-button" type="submit" data-confession-id="{{  confession.id }}" data-confession-text="{{ confession.confession_text }}" data-session="{{  user }}">Edit</button>
       </form>
 
     </div>
   </div>
   {% endfor %}
-</div>
+{% comment %} </div> {% endcomment %}

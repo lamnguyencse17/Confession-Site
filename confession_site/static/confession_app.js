@@ -1,5 +1,5 @@
+var page = 1;
 $(function() {
-
     // This function gets cookie with a given name
     function getCookie(name) {
         var cookieValue = null;
@@ -50,10 +50,11 @@ $(function() {
             }
         }
     });
-    $('.edit-button').click(function() {
+    $(document).on('click', '.edit-button', function() {
       var confession_id = $(this).data('confession-id')
       var confession_text = $(this).data('confession-text')
       var user_session = $(this).data('session')
+      console.log("Sanity Check")
       event.preventDefault();
       event.stopPropagation();
       confession_text = prompt("Edit confession", confession_text);
@@ -70,9 +71,9 @@ $(function() {
       if (Math.abs($('#scroll').scrollTop() - ($('#scroll')[0].scrollHeight-$('#scroll').height())) <= 1)
       {
         scroll_position = $('#scroll').scrollTop()
-        var page = $(this).data('page')
-        console.log(page)
-        load_post(page+1, scroll_position)
+        // var page = $(this).data('page')
+        // console.log(page)
+        load_post(/*page+1,*/ scroll_position)
       }
     })
 });
@@ -89,7 +90,7 @@ function validateForm_content() {
 
 function edit_post(confession_id, confession_text, user_session) {
   $.ajax({
-    url: "/edit_post",
+    url: "/edit_post/",
     type: "POST",
     data: { id : confession_id, confession_edit : confession_text, user: user_session},
 
@@ -120,17 +121,22 @@ function delete_post(confession_id) {
   })
 }
 
-function load_post(page, scroll_position) {
+function load_post(/* page, */ scroll_position) {
+  // console.log(page)
   $.ajax({
     url: "/manage/",
     type: "POST",
-    data: { page_number: page},
+    data: { page_number: page+1},
 
     success: function(data) {
-      console.log("insanity check")
-      console.log(data)
-      $("#scroll").replaceWith(data);
+      // console.log("insanity check")
+      // console.log(data)
+      if (data !== "No More"){
+      $("#scroll").append(data);
       $('#scroll').scrollTop(scroll_position)
+      page=page+1
+      }
+      // else console.log("No More")
       // data = JSON.parse(json.query)
       // $('.confession-box').append('<div class="confession-heading"><p>' + data[0].confess_date + '</p></div><!-- Confession --><div class="confession-main"><p id="' + data[0].confess_date + '">' + data[0].confession_text + '</p></div><div class="confession-footer"><!-- Submit Button --><form method="post">{% csrf_token %}<button type="submit">Publish</button></form><!-- Edit Button --><form method="post" action="">{% csrf_token %}<button class="edit-button" type="submit" data-confession-id="' + data[0].pk + '" data-confession-text="' + data[0].confessions_text + '" data-session="{{  user }}">Edit</button></form></div>')
     },
