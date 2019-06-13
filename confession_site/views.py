@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
-from .form import LoginForm
+from .form import LoginForm, ConfessionForm
 from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
 from django.template.loader import render_to_string
@@ -13,25 +13,22 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    return render(request, 'index.html')
+    form = ConfessionForm()
+    return render(request, 'index.html', {'form': form})
 
 
 def result(request):
     if request.method is 'GET':  # prevent direct access
         raise Http404
     else:
-        confess = request.POST.get('confess_content')
-        if confess is '':  # Validate POST data
-            return render(request, 'error.html', {
-                'error_message': "you didn't send any content",
-            })
-        else:
-            if Confession.objects.filter(confession_text=confess).first():  # Check form re-submission
+        confess = ConfessionForm(request.POST)
+        if confess.is_valid():
+            if Confession.objects.filter(confession_text=confess.cleaned_data['confess_content']).first():  # Check form re-submission
                 return render(request, 'error.html', {
                     'error_message': "Duplicates found",
                 })
             else:
-                confession = Confession(confession_text=confess, confess_date=timezone.now(), confession_edited_date=timezone.now())
+                confession = Confession(confession_text=confess.cleaned_data['confess_content'], confess_date=timezone.now(), confession_edited_date=timezone.now())
                 confession.save()
                 return render(request, 'result.html', {'confession': confession.confession_text, 'id': confession.id})
 
