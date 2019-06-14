@@ -76,17 +76,19 @@ $(function() {
         load_post(/*page+1,*/ scroll_position)
       }
     })
+    $('.contact-button').click(function(){
+        event.preventDefault();
+        event.stopPropagation();
+        name = document.getElementById('id_name').value;
+        email = document.getElementById('id_email').value;
+        content = document.getElementById('id_contact_text').value;
+        if (name === '' || email === '' || content === '')
+        {
+            alert("Please enter all the field to submit");
+        }
+        submit_contact(name, email, content);
+    });
 });
-
-
-
-function validateForm_content() {
-    let content = document.forms["confess_form"]["confess_content"].value;
-    if (content==="" || content==="Your Confession goes here") {
-        alert("Please input something to submit the confession");
-        return false;
-    }
-}
 
 function edit_post(confession_id, confession_text, user_session) {
   $.ajax({
@@ -107,6 +109,7 @@ function edit_post(confession_id, confession_text, user_session) {
 function delete_post(confession_id) {
   $.ajax({
     url: "/delete/",
+    url: "/edit_post/",
     type: "POST",
     data: { id: confession_id },
 
@@ -144,4 +147,22 @@ function load_post(/* page, */ scroll_position) {
       console.log(xhr.status + ": " + xhr.responseText);
     }
   });
+}
+
+function submit_contact(name, email, content) {
+    console.log(content)
+    $.ajax({
+        url: "/about/",
+        type: "POST",
+        data: { name: name, email: email, content: content},
+
+        success: function(json) {
+            $("div.contact-form-container").replaceWith("<h6 style=\"color:black;\">Your Contact Form Has Been Sent!</h6>");
+            console.log(json.result)
+        },
+
+        error: function(xhr,errmsg,err) {
+            alert(xhr.status + ": " + xhr.responseText);
+        }
+    })
 }

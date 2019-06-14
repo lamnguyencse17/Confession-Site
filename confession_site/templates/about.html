@@ -1,7 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- About us info -->
-<div class="container"
-<p>Pending</p>
+<div class="container">
+    <p>Facebook Page: <a href="https://www.facebook.com/TKNconfession/" > Contact</a></p>
+<!-- Contact Form-->
+    <div class="contact-form-container">
+        <h1>Contact Form</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.name }}
+            <p></p>
+            {{ form.email }}
+            <p></p>
+            {{ form.contact_text }}
+        <p></p>
+        <button type="submit" class="contact-button">Submit</button>
+        </form>
+    </div>
 </div>
 {% endblock content %}

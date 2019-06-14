@@ -9,7 +9,7 @@
           <div>
           <form name="confess_form" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
             {% csrf_token %}
-              <textarea name="confess_content" rows="10" cols="100">Your Confession goes here</textarea>
+              {{ form }}
               <p></p>
               <input type="submit" value="Submit">
           </form></div>

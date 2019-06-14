@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Confession, Moderator, LoginRecord
+from .models import Confession, Moderator, LoginRecord, ContactRecord
 
 
 class Record(admin.StackedInline):
@@ -13,3 +13,4 @@ class ModRecord(admin.ModelAdmin):
 
 admin.site.register(Confession)
 admin.site.register(Moderator, ModRecord)
+admin.site.register(ContactRecord)
