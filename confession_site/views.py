@@ -7,6 +7,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
 from .form import LoginForm, ConfessionForm
 from .models import Confession, Moderator, LoginRecord
+from .form import LoginForm, ContactForm
+from .models import Confession, Moderator, LoginRecord, ContactRecord
 from django.contrib.auth.hashers import make_password, check_password
 from django.template.loader import render_to_string
 from django.middleware.csrf import get_token
@@ -74,7 +76,21 @@ def delete(request):
 
 
 def about(request):
-    return render(request, 'about.html')
+    if request.method == 'GET':
+        contact = ContactForm()
+        return render(request, 'about.html', {'form': contact})
+    else:
+        response_data = {}
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        content = request.POST.get('content')
+        print(name)
+        print(email)
+        print(content)
+        Contact = ContactRecord(name = name, email = email, content = content)
+        Contact.save()
+        response_data['result'] = "Succeeded!"
+        return JsonResponse(response_data)
 
 
 def recall_index(request):
