@@ -7,13 +7,14 @@
     <div class="contact-form-container">
         <h1>Contact Form</h1>
         <form action="" method="POST">
+            {% csrf_token %}
             {{ form.name }}
             <p></p>
             {{ form.email }}
             <p></p>
             {{ form.contact_text }}
         <p></p>
-        <button type="submit">Submit</button>
+        <button type="submit" class="contact-button">Submit</button>
         </form>
     </div>
 </div>

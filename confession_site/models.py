@@ -39,6 +39,6 @@ class ContactRecord(models.Model):
     name = models.TextField()
     email = models.EmailField()
     content = models.TextField()
-    date = models.DateTimeField('contacted by')
+    date = models.DateTimeField('contacted by', default=timezone.now())
     def __str__(self):
         return '{0} {1}'.format(self.name, self.content)
