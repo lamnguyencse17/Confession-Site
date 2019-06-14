@@ -9,7 +9,7 @@ html {
    Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans',
     'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
   color: #333;
-  background: #84D883;
+  background: black;
 }
 body {
   background-position:center;
@@ -88,7 +88,7 @@ h5 {
 }
 h6 {
   font-size: 120%;
-  color: #6451A1;
+  color: white;
 }
 .container {
   position: sticky;
@@ -105,7 +105,6 @@ div { text-align: center; }
 footer {
   width: 1050px;
   height: 109px;
-  position: absolute;
   bottom: 0;
 }
 ul {
@@ -119,7 +118,7 @@ li {
   padding-right: 5px;
 }
 li a{
-  color: #6451A1;
+  color: white;
 }
 
 .confession-box{

@@ -7,16 +7,13 @@
     <div class="contact-form-container">
         <h1>Contact Form</h1>
         <form action="" method="POST">
-
-            <label for="name"> Name </label><br>
-            <input type="text" id="name" placeholder="Your name"><br>
-
-            <label for="email"> Email </label><br>
-            <input type="email" id="email" placeholder="Email"><br>
-
-            <textarea name="contact_text" rows="10" cols="auto"></textarea><br>
-        
-            <input type="submit" value="Submit" style="width: auto">
+            {{ form.name }}
+            <p></p>
+            {{ form.email }}
+            <p></p>
+            {{ form.contact_text }}
+        <p></p>
+        <button type="submit">Submit</button>
         </form>
     </div>
 </div>

@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse, JsonRespons
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
-from .form import LoginForm
+from .form import LoginForm, ContactForm
 from .models import Confession, Moderator, LoginRecord
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -73,7 +73,8 @@ def delete(request):
 
 
 def about(request):
-    return render(request, 'about.html')
+    contact = ContactForm()
+    return render(request, 'about.html', {'form': contact})
 
 
 def recall_index(request):
