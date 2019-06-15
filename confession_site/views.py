@@ -23,17 +23,21 @@ def result(request):
     if request.method is 'GET':  # prevent direct access
         raise Http404
     else:
-        confess = ConfessionForm(request.POST)
+        confess = ConfessionForm(request.POST, request.FILES)
         if confess.is_valid():
             if Confession.objects.filter(confession_text=confess.cleaned_data['confess_content']).first():  # Check form re-submission
                 return render(request, 'error.html', {
                     'error_message': "Duplicates found",
                 })
             else:
-                confession = Confession(confession_text=confess.cleaned_data['confess_content'], confess_date=timezone.now(), confession_edited_date=timezone.now())
+                confession = Confession(confession_text=confess.cleaned_data['confess_content'],confession_picture=confess.cleaned_data['picture'], confess_date=timezone.now(), confession_edited_date=timezone.now())
                 confession.save()
-                return render(request, 'result.html', {'confession': confession.confession_text, 'id': confession.id})
-
+                pic_exist = True
+                if bool(confession.confession_picture) == False:
+                    pic_exist = False
+                return render(request, 'result.html', {'confession': confession.confession_text, 'id': confession.id, 'picture': confession.confession_picture, 'exist': pic_exist})
+        else:
+            raise Http404
 
 def recall(request):
     if request.method == 'GET':  # prevent direct access
@@ -42,10 +46,13 @@ def recall(request):
         confess_id = request.POST.get('confess_id')  # Only for initialize purpose
         if Confession.objects.filter(id=confess_id):
             confession = Confession.objects.get(id = confess_id)
-            print(confession)
+            pic_exist = True
+            if bool(confession.confession_picture) == False:
+                pic_exist = False
             return render(request, 'recall.html', {'confession': confession.confession_text,
                                                    'status': confession.confession_published,
-                                                   'id': confession.id})
+                                                   'id': confession.id,
+                                                   'picture': confession.confession_picture, 'exist': pic_exist})
         else:
             return render(request, 'error.html', {
                 'error_message': "you inputted invalid ID",

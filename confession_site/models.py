@@ -1,5 +1,6 @@
 import datetime
-
+import PIL
+from PIL import Image
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
@@ -12,14 +13,14 @@ class Moderator(models.Model):
 
 class Confession(models.Model):
     confession_text = models.TextField()
-    confession_picture = models.ImageField(upload_to = 'pictures', null = True, blank = True, default=None )
+    confession_picture = models.ImageField(upload_to = 'pictures/', null = True, blank = True, default=None )
     confess_date = models.DateTimeField('date published')
     confession_published = models.TextField(default='Unpublished')
     confession_edited = models.TextField(default='No')
     confession_edited_by = models.ForeignKey(Moderator, on_delete=models.CASCADE, null = True, blank=True, default=None)
     confession_edited_date = models.DateTimeField('date edited')
     def __str__(self):
-        return self.confession_text
+        return '{0} {1}'.format(self.id, self.confession_text)
 
     def was_confessed_recently(self):
         now = timezone.now()

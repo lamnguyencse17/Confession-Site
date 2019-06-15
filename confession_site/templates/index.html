@@ -7,7 +7,7 @@
 
           <!-- Confession Content Form -->
           <div>
-          <form name="confess_form" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
+          <form name="confess_form" enctype="multipart/form-data" action="{% url 'confession_site:result' %}" onsubmit="return validateForm_content()" method="post">
             {% csrf_token %}
               {{ form.confess_content }}
               <p></p>

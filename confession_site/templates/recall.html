@@ -4,6 +4,9 @@
 <h1>Recall your confession</h1>
 <h2>Confession ID: {{ id }}</h2>
 {{ confession|linebreaks }}<br>
+{% if exist == True %}
+<img src="{{ picture.url }}">
+{% endif %}
 status: {{ status }}<br>
 <p></p>
 
