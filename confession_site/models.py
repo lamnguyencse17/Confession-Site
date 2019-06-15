@@ -12,6 +12,7 @@ class Moderator(models.Model):
 
 class Confession(models.Model):
     confession_text = models.TextField()
+    confession_picture = models.ImageField(upload_to = 'pictures', null = True, blank = True, default=None )
     confess_date = models.DateTimeField('date published')
     confession_published = models.TextField(default='Unpublished')
     confession_edited = models.TextField(default='No')

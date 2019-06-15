@@ -8,6 +8,7 @@ class LoginForm(forms.Form):
 
 class ConfessionForm(forms.Form):
     confess_content = forms.CharField(label='', widget=forms.Textarea(attrs={'rows':10, 'cols':100}))
+    picture = forms.ImageField()
 
 
 class ContactForm(forms.Form):
