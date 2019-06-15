@@ -25,7 +25,7 @@ SECRET_KEY = '$$!i!ij(c7_ey*=hr17eshpx!n3s5fn!^)+waxvrv^(!%k8gkj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','confessionsite-djangoconfession.apps.us-east-2.online-starter.openshift.com']
 
 
 # Application definition
