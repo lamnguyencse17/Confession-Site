@@ -13,7 +13,14 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.template.loader import render_to_string
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
+@cache_page(CACHE_TTL)
 def index(request):
     form = ConfessionForm()
     return render(request, 'index.html', {'form': form})
@@ -153,6 +160,7 @@ def logout(request):
     return render(request, 'logout.html')
 
 @csrf_exempt
+@cache_page(CACHE_TTL)
 def manage(request):
     try:
         request.session['username']
@@ -186,7 +194,6 @@ def manage(request):
             confessions = paginator.page(paginator.num_pages)
         csrf_token_value = get_token(request)
         html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username'], 'csrf_token_value': csrf_token_value})
-        print(html)
         return HttpResponse(html)
 
 @csrf_exempt
