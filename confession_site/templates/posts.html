@@ -8,7 +8,7 @@
     <!-- Confession -->
     <div class="confession-main">
       <p id="{{ confession.id }}">{{ confession.confession_text }}</p>
-      {% if confession.confession_picture == True %}
+      {% if confession.confession_picture.url is not None %}
       <img src="{{ confession.confession_picture.url }}">
       {% endif %}
     </div>

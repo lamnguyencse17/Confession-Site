@@ -186,8 +186,8 @@ def manage(request):
             confessions = paginator.page(paginator.num_pages)
         csrf_token_value = get_token(request)
         html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username'], 'csrf_token_value': csrf_token_value})
+        print(html)
         return HttpResponse(html)
-        #return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
 
 @csrf_exempt
 def edit_post(request):
