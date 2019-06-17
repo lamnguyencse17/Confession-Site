@@ -8,7 +8,7 @@ Hello, {{ user }}
 <div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
   <h1>{{ list.number }}</h1>
   {% for confession in list %}
-  <div class="confession-box">
+  <div class="confession-box" id ="box-{{ confession.id }}">
     <!-- Date Time -->
     <div class="confession-heading">
       <p>{{ confession.confess_date}}</p>
@@ -16,6 +16,9 @@ Hello, {{ user }}
     <!-- Confession -->
     <div class="confession-main">
       <p id="{{ confession.id }}">{{ confession.confession_text }}</p>
+      {% if confession.confession_picture.url is not None %}
+      <img src="{{ confession.confession_picture.url }}">
+      {% endif %}
     </div>
 
     <div class="confession-footer">
@@ -28,7 +31,10 @@ Hello, {{ user }}
       <form method="post" action="">
         <button class="edit-button" type="submit" data-confession-id="{{  confession.id }}" data-confession-text="{{ confession.confession_text }}" data-session="{{  user }}">Edit</button>
       </form>
-
+<!-- Delete Button -->
+      <form method="post" action="">
+        <button class="delete-button" type="submit" data-confession-id="{{  confession.id }}">Delete</button>
+      </form>
     </div>
   </div>
   {% endfor %}

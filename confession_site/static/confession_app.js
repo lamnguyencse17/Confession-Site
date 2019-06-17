@@ -60,7 +60,8 @@ $(function() {
       confession_text = prompt("Edit confession", confession_text);
       edit_post(confession_id, confession_text, user_session);
     });
-    $('.delete-button').click(function() {
+    
+    $(document).on('click', '.delete-button', function() {
       var confession_id = $(this).data('confession-id')
       event.preventDefault();
       event.stopPropagation();
@@ -109,13 +110,12 @@ function edit_post(confession_id, confession_text, user_session) {
 function delete_post(confession_id) {
   $.ajax({
     url: "/delete/",
-    url: "/edit_post/",
     type: "POST",
     data: { id: confession_id },
 
     success: function(json) {
-      alert(json.result + "\nYou will be redirected to homepage after pressing OK")
-      location.href="/"
+      id = "box-" + String(confession_id)
+      document.getElementById(id).remove();
     },
 
     error: function(xhr, errmsg, err) {

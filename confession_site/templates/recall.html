@@ -2,9 +2,13 @@
 {% block content %}
 <!-- Recall Heading and Status -->
 <h1>Recall your confession</h1>
+<h3>status: {{ status }}</h3>
 <h2>Confession ID: {{ id }}</h2>
 {{ confession|linebreaks }}<br>
-status: {{ status }}<br>
+{% if exist == True %}
+<img src="{{ picture.url }}">
+{% endif %}
+
 <p></p>
 
 <!-- Delete Request -->
