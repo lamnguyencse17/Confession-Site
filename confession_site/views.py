@@ -1,7 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
@@ -15,10 +14,13 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from django.shortcuts import render
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
 
 @cache_page(CACHE_TTL)
 def index(request):
@@ -98,9 +100,6 @@ def about(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         content = request.POST.get('content')
-        print(name)
-        print(email)
-        print(content)
         Contact = ContactRecord(name = name, email = email, content = content)
         Contact.save()
         response_data['result'] = "Succeeded!"
@@ -111,105 +110,105 @@ def recall_index(request):
     return render(request, 'recall-index.html')
 
 
-def login(request):
-    if request.method == 'GET':
-        try:
-            request.session['username']
-            return HttpResponseRedirect('/manage/')
-        except KeyError:
-            pass
+def mod_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/manage/')
     form = LoginForm(request.POST)
     if request.method == 'POST' and form.is_valid():
-        if Moderator.objects.filter(username=form.cleaned_data['username']):
+        """ if Moderator.objects.filter(username=form.cleaned_data['username']):
             validate = Moderator.objects.get(username=form.cleaned_data['username'])
             if check_password(form.cleaned_data['password'], validate.hash):
                 request.session['username'] = form.cleaned_data['username']
-                request.session.set_expiry(300)
+                request.session.set_expiry(300) """
+        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
                 return HttpResponseRedirect('/manage/')
             else:
                 return render(request, 'error.html', {
-                    'error_message': "Wrong credential",
-                })
+                    'error_message': "Disabled Account",
+                    })
         else:
             return render(request, 'error.html', {
-                'error_message': "Wrong credential",
-            })
+                    'error_message': "Wrong credential",
+                })
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'mod_login.html', {'form': form})
 
 
 def register(request):
     form = LoginForm(request.POST)
     if request.method == 'POST' and form.is_valid():
-        mod = Moderator(username=form.cleaned_data['username'], hash=make_password(form.cleaned_data['password']))
-        mod.save()
-        return HttpResponseRedirect('/login/')
+        user = User.objects.create_user(form.cleaned_data['username'], "", form.cleaned_data['password'])
+        """ mod = Moderator(username=form.cleaned_data['username'], hash=make_password(form.cleaned_data['password']))
+        mod.save() """
+        return HttpResponseRedirect('/mod_login/')
     else:
         form = LoginForm()
     return render(request, 'register.html', {'form': form})
 
 
-def logout(request):
-    try:
-        del request.session['username']
-    except KeyError:
-        return render(request, 'error.html', {
-            'error_message': "Not logged in",
-        })
-    return render(request, 'logout.html')
+def mod_logout(request):
+    logout(request)
+    return HttpResponse('/mod_logout/')
 
 @csrf_exempt
 @cache_page(CACHE_TTL)
 def manage(request):
-    try:
+    """ try:
         request.session['username']
     except KeyError:
         return render(request, 'error.html', {
             'error_message': "Not logged in yet!",
-        })
-    confess_list = Confession.objects.filter(confession_published="Unpublished").order_by('-confess_date')
-    paginator = Paginator(confess_list, 5)
-    #Experimental
-    if (request.method == "GET"):
-        page_number = request.GET.get("page_number")
+        }) """
+    if request.user.is_authenticated:
+        confess_list = Confession.objects.filter(confession_published="Unpublished").order_by('-confess_date')
         paginator = Paginator(confess_list, 5)
-        try:
-            confessions = paginator.page(page_number)
-        except PageNotAnInteger:
-            confessions = paginator.page(1)
-        except EmptyPage:
-            confessions = paginator.page(paginator.num_pages)
-        return render(request, 'manage.html', {'list': confessions, 'user': request.session['username']})
+        #Experimental
+        if (request.method == "GET"):
+            page_number = request.GET.get("page_number")
+            paginator = Paginator(confess_list, 5)
+            try:
+                confessions = paginator.page(page_number)
+            except PageNotAnInteger:
+                confessions = paginator.page(1)
+            except EmptyPage:
+                confessions = paginator.page(paginator.num_pages)
+            return render(request, 'manage.html', {'list': confessions, 'user': request.user.get_username()})
+        else:
+            page_number = request.POST.get("page_number")
+            paginator = Paginator(confess_list, 5)
+            if (paginator.page(int(page_number)-1)).has_next() is False:
+                return HttpResponse('No More')
+            try:
+                confessions = paginator.page(page_number)
+            except PageNotAnInteger:
+                confessions = paginator.page(1)
+            except EmptyPage:
+                confessions = paginator.page(paginator.num_pages)
+            csrf_token_value = get_token(request)
+            html = render_to_string('posts.html', {'list': confessions, 'user': request.user.get_username(), 'csrf_token_value': csrf_token_value})
+            return HttpResponse(html)
     else:
-        page_number = request.POST.get("page_number")
-        paginator = Paginator(confess_list, 5)
-        if (paginator.page(int(page_number)-1)).has_next() is False:
-            return HttpResponse('No More')
-        try:
-            confessions = paginator.page(page_number)
-        except PageNotAnInteger:
-            confessions = paginator.page(1)
-        except EmptyPage:
-            confessions = paginator.page(paginator.num_pages)
-        csrf_token_value = get_token(request)
-        html = render_to_string('posts.html', {'list': confessions, 'user': request.session['username'], 'csrf_token_value': csrf_token_value})
-        return HttpResponse(html)
+        return render(request, 'error.html', {
+            'error_message': "Not logged in yet!",
+        })
 
 @csrf_exempt
 def edit_post(request):
     if request.method == 'POST':
         confession_id = request.POST.get('id')
         confession_edit = request.POST.get('confession_edit')
-        user_session = request.POST.get('user')
         response_data = {}
         try:
-            editor = Moderator.objects.get(username=user_session)
+            editor = Moderator.objects.get(username=request.user.get_username())
             Confession.objects.filter(id=confession_id).update(confession_edited_by=editor)
             edit = Confession.objects.get(id=confession_id)
             edit.confession_text = confession_edit
             edit.confession_edited = 'Yes'
-            edit.confession_edited_by = Moderator.objects.get(username=user_session)
+            edit.confession_edited_by = Moderator.objects.get(username=request.user.get_username())
             edit.confession_edited_date = timezone.now()
             edit.save()
             response_data['result'] = 'Edit successfully'

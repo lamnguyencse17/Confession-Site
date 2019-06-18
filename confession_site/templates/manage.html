@@ -2,8 +2,9 @@
 {% block content %}
 Hello, {{ user }}
 
-<form method="get" action="/logout/">
-    <button type="submit">Logout</button>
+<form method="post" action="/logout/">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
 </form>
 <div class="confession-outbound" data-page="{{ list.number }}" id="scroll">
   <h1>{{ list.number }}</h1>

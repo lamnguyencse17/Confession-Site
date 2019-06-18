@@ -53,12 +53,11 @@ $(function() {
     $(document).on('click', '.edit-button', function() {
       var confession_id = $(this).data('confession-id')
       var confession_text = $(this).data('confession-text')
-      var user_session = $(this).data('session')
       console.log("Sanity Check")
       event.preventDefault();
       event.stopPropagation();
       confession_text = prompt("Edit confession", confession_text);
-      edit_post(confession_id, confession_text, user_session);
+      edit_post(confession_id, confession_text);
     });
     
     $(document).on('click', '.delete-button', function() {
@@ -95,7 +94,7 @@ function edit_post(confession_id, confession_text, user_session) {
   $.ajax({
     url: "/edit_post/",
     type: "POST",
-    data: { id : confession_id, confession_edit : confession_text, user: user_session},
+    data: { id : confession_id, confession_edit : confession_text},
 
     success: function(json) {
       $('#'+confession_id).replaceWith("<p>" + json.edit + "</p>")
